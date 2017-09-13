@@ -5,7 +5,22 @@ exports.sessionNew = function(req, res){
 };
 
 exports.sessionCreate = function(req, res){
-   res.redirect('/profile');
+   var username = req.body.username;
+   var pass = req.body.password;
+   if(!username || !pass){
+     res.render('login', {message: "Please enter all the fields"});
+   }
+   else{
+     User.find({'username': username, 'password': pass}, function(err, user){
+       if(user[0]){
+         res.cookie('loginId', user[0]._id, {httpOnly: true, signed: true, maxAge: 360000});
+         res.redirect('/profile');
+        }
+       else{
+         res.render('login', {message: "Invalid credentials!"});
+       }
+     });
+   }
 };
 
 exports.sessionDestroy = function(req, res){
