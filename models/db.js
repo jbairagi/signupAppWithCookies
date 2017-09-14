@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-
+mongoose.Promise = global.Promise;
 var db = mongoose.createConnection('mongodb://localhost/mydb');
 
 var userSchema = mongoose.Schema({
