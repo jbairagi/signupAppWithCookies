@@ -1,4 +1,5 @@
 var User = require('./../models/db');
+const bcrypt = require('bcrypt');
 
 exports.sessionNew = function(req, res){
   res.render('login', {message: 'Log in'});
@@ -11,13 +12,23 @@ exports.sessionCreate = function(req, res){
      res.render('login', {message: "Please enter all the fields"});
    }
    else{
-     User.find({'username': username, 'password': pass}, function(err, user){
+     User.find({'username': username}, function(err, user){
        if(user[0]){
-         res.cookie('loginId', user[0]._id, {httpOnly: true, signed: true, maxAge: 360000});
-         res.redirect('/profile');
+         bcrypt.compare(pass, user[0].password, function (err, result) {
+           if(err){
+             console.log(err);
+           }
+           if (result === true) {
+             res.cookie('loginId', user[0]._id, {httpOnly: true, signed: true, maxAge: 360000});
+ 						 res.redirect('/profile');
+ 					 }
+ 					 else{
+ 						 res.render('login', {message: "Invalid credentials!"});
+ 					 }
+         });
         }
        else{
-         res.render('login', {message: "Invalid credentials!"});
+         res.render('login', {message: "User not found! Login again"});
        }
      });
    }
