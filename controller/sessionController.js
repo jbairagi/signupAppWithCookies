@@ -1,4 +1,4 @@
-var User = require('./../models/db');
+var User = require('./../models/user');
 const bcrypt = require('bcrypt');
 
 exports.sessionNew = function(req, res){

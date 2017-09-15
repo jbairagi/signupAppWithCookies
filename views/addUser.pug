@@ -1,0 +1,35 @@
+html
+head
+	title Add User
+	body
+		if(message)
+			h4 #{message}
+			form(action = "/addUser" method = "POST")
+				| Username:
+				| #{' '}
+				input(name = "username" type = "text" required placeholder= "Username")
+				br
+				| Email Id:
+				| #{' '}
+				input(name = "email" type = "text" required placeholder= "Email Id")
+				br
+				| Password:
+				| #{' '}
+				input(name = "password" type = "password" required placeholder= "Password")
+				br
+				| Role: #{' '}
+				input(name = "role" type = "text" required placeholder= "manager or employee")
+				//- | #{' '}
+				//- select(name = "role" placeholder=select)
+				//- 	option(value = "manager") Manager
+				//- 	option(value = "employee") Employee
+				br
+				| Add User:
+				| #{' '}
+				button(type = "Submit") Add
+				br
+				|
+				br
+				| Check your profile:
+				| #{' '}
+				a(class='button', href='/login') Profile

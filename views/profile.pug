@@ -2,15 +2,42 @@ html
    head
       title Profile Page
    body
-      if(type == "error")
-         h3(style = "color:red") #{message}
-      else
-         h3 Profile
+      h3 Profile
 
-         div
-         | Welcome,
-         | #{username}
-         br
-         | Do you want to logout?
-         form(action = "/logout", method = "GET")
-            button(type = "Submit") Logout
+      div
+      | Welcome,
+      | #{username}
+      br
+      if(type == "manager")
+        | Do you want to add new user? #{' '}
+        a(class='button', href='/addUser') Add User
+        br
+        |
+        br
+        | Do you want to add a new Project?
+        br
+        form(action = "/addProjects" method = "POST")
+          | Project Details: 
+          br
+          input(name = "title" type = "text" required placeholder= "Project title")
+          | #{' '}
+          input(name = "description" type = "text" required placeholder= "Description")
+          | #{' '}
+          input(name = "beginningDate" type = "text" required placeholder= "Beginning Date")
+          | #{' '}
+          input(name = "dueDate" type = "text" required placeholder= "Due Date")
+          | #{' '}
+          input(name = "developer" type = "text" required placeholder= "Developer")
+          br
+          | Add Project: #{' '}
+          button(type = "Submit") Add
+      br
+      |
+      br
+      | Check projects assigned to you: #{' '}
+      a(class='button', href='/getAssignedProjects') know Projects
+      
+      br
+      | Do you want to logout?
+      form(action = "/logout", method = "GET")
+         button(type = "Submit") Logout
