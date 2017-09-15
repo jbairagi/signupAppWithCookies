@@ -46,12 +46,26 @@ exports.projectCreate =  function(req, res){
                   function(err, response){
                       //console.log(response);
                 });
+                console.log("up");
                 res.redirect('/profile');
               }
             });
           }
           else{
-            res.render('show_message', {message: "Project already exists. if you need to add a devloper then use Update"});
+
+            console.log(dev);
+            Project.find({'title': title}, function(err, project){
+              User.findByIdAndUpdate(dev, {$push: {'project': project._id}},
+                function(err, response){
+                    //console.log(response);
+              });
+            });
+            res.redirect('/profile');
+            console.log("down");
+
+
+
+
           }
         });
       }
