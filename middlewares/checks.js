@@ -42,7 +42,7 @@ exports.isManager = function(req, res, next){
         next();
       }
       else{
-        res.render('addUser', {message: "Only Managers are allowed to add new entries"});
+        res.render('addUser', {message: "Only Managers have access to it."});
       }
     });
   }
