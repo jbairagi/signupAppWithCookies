@@ -3,6 +3,9 @@ var router = express.Router();
 var session = require('./../controller/sessionController');
 var check = require('./../middlewares/checks.js');
 
+router.get('/', function(req, res){
+  res.redirect('/login');
+});
 router.get('/login', check.userLoggedIn, session.sessionNew);
 router.post('/login', session.sessionCreate);
 
