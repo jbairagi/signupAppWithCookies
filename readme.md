@@ -1,1 +1,1 @@
-It is a simple user addUser-login application using cookies.
+It is a simple user manager-employee-project application
