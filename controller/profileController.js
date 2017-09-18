@@ -1,10 +1,15 @@
 var User = require('./../models/user');
+var Project = require('./../models/project');
 
 exports.profile = function(req, res){
   var user = req.userData;
-  // for(var i=0; i<user){
-  //
-  // }
-  console.log(user.project);
-  res.render('profile', {username: user.username, type: user.role, projects: user.project});
+  User.findOne({'username' : user.username}, {'_id': 0}).populate('project').exec(function(err,result){
+  	if (err) res.send(err);
+  	else if (result == undefined){
+  		res.send('Invalid Access');
+  	}
+    else{
+        res.render('profile', {username: user.username, type: user.role, result: result.project});
+    }
+  });
 };
