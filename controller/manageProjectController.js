@@ -33,7 +33,7 @@ exports.projectCreate = function(req, res){
             });
             newProject.save(function(err, project){
               if(err){
-                console.log(err);
+                //console.log(err);
                 res.redirect('/login');
               }
               else {
@@ -41,7 +41,7 @@ exports.projectCreate = function(req, res){
                   function(err, response){
                       //console.log(response);
                 });
-                console.log("up");
+                //console.log("up");
                 res.redirect('/profile');
               }
             });
@@ -82,9 +82,9 @@ exports.addProjectDeveloper = function(req, res){
           else{
             //console.log(dev);
             Project.findOneAndUpdate({'title': title}, {$push: {'developers': dev}}, function(err, project){
-              console.log(project);
+              //console.log(project);
               User.findByIdAndUpdate(dev, {$push: {'project': project._id}},function(err, user){
-                console.log(user);
+                //console.log(user);
               });
             });
             res.redirect('/profile');
@@ -132,7 +132,7 @@ exports.editProjectBeginningDate = function(req, res){
     else{
       //console.log(dev);
       Project.findOneAndUpdate({'title': title}, {'beginningDate': beginningDate}, function(err, project) {
-        console.log(project);
+        //console.log(project);
       });
       res.redirect('/profile');
       //console.log("down");
@@ -152,7 +152,7 @@ exports.editProjectDueDate = function(req, res){
     else{
       //console.log(dev);
       Project.findOneAndUpdate({'title': title}, {'dueDate': dueDate}, function(err, project) {
-        console.log(project);
+      //  console.log(project);
       });
       res.redirect('/profile');
       //console.log("down");
@@ -160,66 +160,19 @@ exports.editProjectDueDate = function(req, res){
   });
 };
 
-exports.removeProject = function(req, res){
-  var user = req.userData;
-  var title = req.body.title;
-  Project.count({'title': title}, function(err, count){
-    if(count === 0){
-      console.log("Project " + title + " is not added.");
-      res.redirect('/profile');
-    }
-    else{
-      Project.findOneAndRemove({'title': title});
-      res.redirect('/profile');
-      //console.log("down");
-    }
-  });
-};
-
-
-
-
-
-
-
-
-
-
-// exports.projectCreate =  function(req, res){
+// exports.removeProject = function(req, res){
+//   var user = req.userData;
 //   var title = req.body.title;
-//   var description = req.body.description;
-//   var beginningDate = req.body.beginningDate;
-//   var dueDate = req.body.dueDate;
-//   var developer = req.body.developer;
-//   console.log(developer);
-//   developer = helper.getIdByUsername(developer);
-//
-//           //console.log(developer);
-//           if(!title || !description || !beginningDate || !dueDate || !developer){
-//             console.log("here");
-//             res.send("Invalid details!");
-//           }
-//           else{
-//             Project.count({'title': title}, function(err, count){
-//               if(count === 0){
-//                 var newProject = new Project({
-//                   title: title,
-//                   description: description,
-//                   beginningDate: beginningDate,
-//                   dueDate: dueDate,
-//                   developer: developer
-//                 });
-//                 newProject.save(function(){
-//                   if(err)
-//                     console.log(err);
-//                   else {
-//                     res.render('profile');
-//                   }
-//                 });
-//               }
-//               else{
-//                 res.render('show_message', {message: "Project already exists"});
-//               }
-//             });
-//           }
+//   Project.find({'title': title}, function(err, project){
+//     if(err) console.log(err);
+//     if(project){
+//       console.log(project[0]._id);
+//       Project.findByIdAndRemove(project[0]._id);
+//       res.redirect('/profile');
+//     }
+//     else{
+//       console.log();
+//       res.redirect('/profile');
+//     }
+//   });
 // };
