@@ -29,11 +29,9 @@ exports.addUserCreate =  function(req, res){
           newUser.save(function(err, user){
             if(err)
                  res.render('addUser', {message: "Database error", type: "error"});
-              else{
-                // res.cookie('loginId', user._id, {httpOnly: true, signed: true, maxAge: 360000});
-                // res.redirect('/profile');
-                res.render('addUser', {message: "New " + role+ " added"});
-               }
+            else{
+              res.render('addUser', {message: "New " + role+ " added"});
+             }
           });
         })
       }
