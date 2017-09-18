@@ -6,14 +6,10 @@ var check = require('./../middlewares/checks.js');
 router.get('/addProjects', manageProjects.manageProjectNew);
 router.post('/addProjects', check.isManager, manageProjects.projectCreate);
 
-//router.get('/addProjectdeveloper', manageProjects.manageProjectNew);
 router.post('/addProjectDeveloper', check.isManager, manageProjects.addProjectDeveloper);
 router.post('/editProjectDescription', check.isManager, manageProjects.editProjectDescription);
 router.post('/editProjectBeginningDate', check.isManager, manageProjects.editProjectBeginningDate);
 router.post('/editProjectDueDate', check.isManager, manageProjects.editProjectDueDate);
-router.post('/removeProject', check.isManager, manageProjects.removeProject);
-
-
-//router.get('/getAssignedProjects', manageProjects.getAssignedProjects);
+//router.post('/removeProject', check.isManager, manageProjects.removeProject);
 
 module.exports = router;
