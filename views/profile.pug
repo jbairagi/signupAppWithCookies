@@ -60,7 +60,7 @@ html
           | Project Name: 
           input(name = "title" type = "text" required placeholder= "Project Title")
           | #{' '}
-          input(name = "beginningDatedate" type = "text" required placeholder= "New Beginning Date")
+          input(name = "beginningDate" type = "text" required placeholder= "New Beginning Date")
           | #{' '}
           button(type = "Submit") Change
           br
@@ -74,21 +74,31 @@ html
           | #{' '}
           button(type = "Submit") Change
           br
-        | Want to remove a project?
-        br
-        form(action = '/removeProject' method = 'POST')
-          | Project Name: 
-          input(name = "title" type = "text" required placeholder= "Project Title")
-          | #{' '}
-          button(type = "Submit") Remove
-          br
-      | Projects assigned to you are:
+        //- | Want to remove a project?
+        //- br
+        //- form(action = '/removeProject' method = 'POST')
+        //-   | Project Name: 
+        //-   input(name = "title" type = "text" required placeholder= "Project Title")
+        //-   | #{' '}
+        //-   button(type = "Submit") Remove
+        //-   br
+      | Projects assigned to you:
       br
-      //- <!-- a(class='button', href='/getAssignedProjects') know Projects -->
-      //- <!-- each value in projects -->
-
-
-
+      table
+        tr
+          if(result[0])
+            td Project Title
+            td Description
+            td Beginning date
+            td Due date
+        each val in result
+          tr
+            td #{val.title} 
+            td #{val.description} 
+            td #{val.beginningDate.toLocaleDateString()} 
+            td #{val.dueDate.toLocaleDateString()} 
+        else
+          | There are no projects assigned to you yet
       br
       | Do you want to logout?
       form(action = "/logout", method = "GET")
