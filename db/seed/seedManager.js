@@ -1,5 +1,5 @@
-var User = require('./../models/user');
-var Project = require('./../models/project');
+var User = require('./../../app/models/user');
+var Project = require('./../../app/models/project');
 const bcrypt = require('bcrypt');
 
 exports.start = function(){

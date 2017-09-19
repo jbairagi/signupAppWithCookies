@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var db = require('./../lib/dbConfig');
+var db = require('./../../config/dbConfig');
 var Projects = require('./project.js');
 
 var userSchema = mongoose.Schema({

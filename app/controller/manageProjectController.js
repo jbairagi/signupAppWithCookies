@@ -112,7 +112,7 @@ exports.editProjectDescription = function(req, res){
     else{
       //console.log(dev);
       Project.findOneAndUpdate({'title': title}, {'description': description}, function(err, project) {
-        console.log(project);
+        //console.log(project);
       });
       res.redirect('/profile');
       //console.log("down");
