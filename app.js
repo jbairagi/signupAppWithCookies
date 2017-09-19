@@ -5,6 +5,8 @@ var multer = require('multer');
 var upload = multer();
 var cookieParser = require('cookie-parser');
 
+var thePort = process.env.PORT || 3000;
+
 var seed = require('./lib/seedManager.js');
 seed.start();
 
@@ -26,4 +28,4 @@ app.use(session);
 app.use(profile);
 app.use(projects);
 
-app.listen(3000);
+app.listen(thePort);
