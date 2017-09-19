@@ -16,6 +16,11 @@ html
         br
         |
         br
+        if(type == "addProjectValidationError")
+          ul
+          - for (var i = 0; i < err.length; i++) {
+          li #{err[i].msg}
+          - }
         | Do you want to add a new Project?
         br
         form(action = "/addProjects" method = "POST")
@@ -26,6 +31,11 @@ html
           input(name = "description" type = "text" required placeholder= "Description")
           | #{' '}
           input(name = "beginningDate" type = "text" required placeholder= "Beginning Date")
+          //- mixin chooseDate(options)
+          //-   +b.choose-date
+          //-     +e.datepicker
+          //-       input(type='text' placeholder='Pick a date')
+          //-       +fontIcon({ name: 'calendar' })
           | #{' '}
           input(name = "dueDate" type = "text" required placeholder= "Due Date")
           | #{' '}
@@ -34,6 +44,11 @@ html
           | Add Project: #{' '}
           button(type = "Submit") Add
           br
+        if(type == "addDeveloperValidationError")
+          ul
+          - for (var i = 0; i < err.length; i++) {
+          li #{err[i].msg}
+          - }
         | Want to add developer to a project?
         br
         form(action = '/addProjectdeveloper' method = 'POST')
@@ -44,6 +59,11 @@ html
           | #{' '}
           button(type = "Submit") Add
           br
+        if(type == "editDescriptionValidationError")
+          ul
+          - for (var i = 0; i < err.length; i++) {
+          li #{err[i].msg}
+          - }
         | Want to edit discription of a project?
         br
         form(action = '/editProjectDescription' method = 'POST')
@@ -54,6 +74,11 @@ html
           | #{' '}
           button(type = "Submit") Edit
           br
+        if(type == "editBeginningValidationError")
+          ul
+          - for (var i = 0; i < err.length; i++) {
+          li #{err[i].msg}
+          - }
         | Want to change the beginning date of a project?
         br
         form(action = '/editProjectBeginningDate' method = 'POST')
@@ -64,6 +89,11 @@ html
           | #{' '}
           button(type = "Submit") Change
           br
+        if(type == "editDueValidationError")
+          ul
+          - for (var i = 0; i < err.length; i++) {
+          li #{err[i].msg}
+          - }
         | Want to change the due date of a project?
         br
         form(action = '/editProjectDueDate' method = 'POST')
@@ -74,6 +104,11 @@ html
           | #{' '}
           button(type = "Submit") Change
           br
+        //- if(type == "removeProjectValidationError")
+        //-   ul
+        //-   - for (var i = 0; i < err.length; i++) {
+        //-   li #{err[i].msg}
+        //-   - }
         //- | Want to remove a project?
         //- br
         //- form(action = '/removeProject' method = 'POST')
@@ -87,10 +122,10 @@ html
       table
         tr
           if(result[0])
-            td Project Title
-            td Description
-            td Beginning date
-            td Due date
+            th Project Title
+            th Description
+            th Beginning date
+            th Due date
         each val in result
           tr
             td #{val.title} 
