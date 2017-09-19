@@ -8,6 +8,7 @@ exports.addUserNew = function(req, res){
 exports.addUserCreate =  function(req, res){
   req.checkBody('username', 'Username is required').notEmpty();
   req.checkBody('password', 'Password is required').notEmpty();
+  req.checkBody('password', 'Password should be atleast 5 characters long').isLength({ min: 5 })
   req.checkBody('email', 'Email is required').notEmpty();
   req.checkBody('email', 'Email does not appear to be valid').isEmail();
   req.checkBody('role', 'Role can be either a manager or an employee only').isIn(['manager', 'employee']);
