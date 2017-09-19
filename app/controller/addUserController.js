@@ -14,7 +14,7 @@ exports.addUserCreate =  function(req, res){
      res.send("Invalid details!");
   }
   else{
-    User.count({ $or:[ {'emailId': email}, {'username': username}]}, function (err, count) {
+    User.count({ $or:[{'emailId': email}, {'username': username}]}, function (err, count) {
       if (count === 0) {
         bcrypt.hash(pass, 10, function (err, hash){
           if (err) {

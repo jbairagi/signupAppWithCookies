@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var manageProjects = require('./../controller/manageProjectController');
-var check = require('./../middlewares/checks.js');
+var manageProjects = require('./../app/controller/manageProjectController');
+var check = require('./../app/middlewares/checks.js');
 
 router.get('/addProjects', manageProjects.manageProjectNew);
 router.post('/addProjects', check.isManager, manageProjects.projectCreate);

@@ -36,7 +36,7 @@ exports.projectCreate = function(req, res){
                 //console.log(err);
                 res.redirect('/login');
               }
-              else {
+              else{
                 User.findByIdAndUpdate(dev, {$push: {'project': project._id}},
                   function(err, response){
                       //console.log(response);

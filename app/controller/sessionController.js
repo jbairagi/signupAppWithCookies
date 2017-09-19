@@ -12,7 +12,7 @@ exports.sessionCreate = function(req, res){
      res.render('login', {message: "Please enter all the fields"});
    }
    else{
-     User.find({'username': username}, function(err, user){
+     User.find({'username': username},'+password', function(err, user){
        if(user[0]){
          bcrypt.compare(pass, user[0].password, function (err, result) {
            if(err){

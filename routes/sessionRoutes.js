@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var session = require('./../controller/sessionController');
-var check = require('./../middlewares/checks.js');
+var session = require('./../app/controller/sessionController');
+var check = require('./../app/middlewares/checks.js');
 
 router.get('/', function(req, res){
   res.redirect('/login');
