@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var validator = require('express-validator');
 
 var thePort = process.env.PORT || 3000;
 
@@ -11,6 +12,7 @@ seed.start();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser("secret"));
+app.use(validator([]));
 
 app.set('view engine', 'pug');
 app.set('views', './app/views');
