@@ -1,6 +1,8 @@
 html
    head
       title Profile Page
+      script(type = 'text/javascript' src='http://code.jquery.com/jquery-1.11.0.min.js')
+      script(type = 'text/javascript' language = 'javascript' src="javascripts/addProjectFormValidation.js")
    body
       h3 Profile
 
@@ -23,26 +25,31 @@ html
           - }
         | Do you want to add a new Project?
         br
-        form(action = "/addProjects" method = "POST")
+        form(id = "addProjectForm" method = "POST" action = "/addProjects")
           | Project Details:
           br
-          input(name = "title" type = "text" required placeholder= "Project title")
+          input(name = "title" type = "text" id = "form_title" required placeholder= "Project title")
           | #{' '}
-          input(name = "description" type = "text" required placeholder= "Description")
+          input(name = "description" type = "text" id = "form_description" required placeholder= "Description")
           | #{' '}
-          input(name = "beginningDate" type = "text" required placeholder= "Beginning Date")
-          //- mixin chooseDate(options)
-          //-   +b.choose-date
-          //-     +e.datepicker
-          //-       input(type='text' placeholder='Pick a date')
-          //-       +fontIcon({ name: 'calendar' })
+          input(name = "beginningDate" type = "text" id = "form_beginning" required placeholder= "Beginning Date")
           | #{' '}
-          input(name = "dueDate" type = "text" required placeholder= "Due Date")
+          input(name = "dueDate" type = "text" id = "form_due" required placeholder= "Due Date")
           | #{' '}
-          input(name = "developer" type = "text" required placeholder= "Developer")
+          input(name = "developer" type = "text" id = "form_dev" required placeholder= "Developer")
           br
           | Add Project: #{' '}
           button(type = "Submit") Add
+          br
+          span(id = "title_error_message")
+          br
+          span(id = "description_error_message")
+          br
+          span(id = "beginning_error_message")
+          br
+          span(id = "due_error_message")
+          br
+          span(id = "dev_error_message")
           br
         if(type == "addDeveloperValidationError")
           ul
