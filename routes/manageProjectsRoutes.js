@@ -10,6 +10,6 @@ router.post('/addProjectDeveloper', check.isManager, manageProjects.addProjectDe
 router.post('/editProjectDescription', check.isManager, manageProjects.editProjectDescription);
 router.post('/editProjectBeginningDate', check.isManager, manageProjects.editProjectBeginningDate);
 router.post('/editProjectDueDate', check.isManager, manageProjects.editProjectDueDate);
-//router.post('/removeProject', check.isManager, manageProjects.removeProject);
+router.post('/removeProject', check.isManager, manageProjects.removeProject);
 
 module.exports = router;
