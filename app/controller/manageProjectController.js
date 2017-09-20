@@ -1,6 +1,5 @@
 var User = require('./../models/user');
 var Project = require('./../models/project');
-//var helper = require('./../helpers/getDetails');
 
 exports.manageProjectNew = function(req, res){
     res.redirect('/profile');
@@ -10,13 +9,28 @@ exports.projectCreate = function(req, res){
   req.checkBody('title', 'Title is required').notEmpty();
   req.checkBody('description', 'Description is required').notEmpty();
   req.checkBody('beginningDate', 'Beginning Date is required').notEmpty();
+  req.checkBody('beginningDate', 'Beginning Date is invalid (Use YYYY-MM-DD format)').isDateValid();
   req.checkBody('dueDate', 'Due Date is required').notEmpty();
+  req.checkBody('dueDate', 'Due Date is invalid (Use YYYY-MM-DD format)').isDateValid();
   req.checkBody('developer', 'Developer is required').notEmpty();
-
   var errors = req.validationErrors();
+  // console.log(errors+ "ffffffffffffff");
   if(errors){
-    // console.log(errors);
-    res.render('profile', {err: errors, type: "addProjectValidationError", message: "Try adding again!"});
+    let userId = req.signedCookies['loginId'];
+    if(userId){
+      User.findById(userId, (err, user) => {
+          if (err)
+            console.log(err);
+          // console.log(errors);
+          // console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+          // console.log(user);
+          // console.log("ggggggggggggggggggggggggg");
+          res.render('profile', {err: errors, check: "addProjectValidationError", username: user.username, type: user.role, result: user.project, message: "Try adding again!"});
+        });
+    }
+    else{
+      res.redirect('/login');
+    }
   }
   else{
     var title = req.body.title;
