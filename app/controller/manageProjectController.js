@@ -16,7 +16,7 @@ exports.projectCreate = function(req, res){
   var errors = req.validationErrors();
   if(errors){
     // console.log(errors);
-    res.render('profile', {err: errors, type: "validationError", message: "Try adding again!"});
+    res.render('profile', {err: errors, type: "addProjectValidationError", message: "Try adding again!"});
   }
   else{
     var title = req.body.title;
@@ -24,15 +24,12 @@ exports.projectCreate = function(req, res){
     var beginningDate = req.body.beginningDate;
     var dueDate = req.body.dueDate;
     var developer = req.body.developer;
-    //console.log(developer);
     User.find({'username': developer}, function(err, user){
       if(err)
         console.log(err);
       if(user[0]){
         dev = user[0]._id;
-        if(!title || !description || !beginningDate || !dueDate || !dev){
-          res.send("Invalid details!");
-        }
+        if(!title || !description || !beginningDate || !dueDate || !dev) console.log("Invalid details!");
         else{
           Project.count({'title': title}, function(err, count){
             if(count === 0){
@@ -44,33 +41,21 @@ exports.projectCreate = function(req, res){
                 developers: dev
               });
               newProject.save(function(err, project){
-                if(err){
-                  //console.log(err);
-                  res.redirect('/login');
-                }
+                if(err) res.redirect('/login');
                 else{
-                  User.findByIdAndUpdate(dev, {$push: {'project': project._id}},
-                    function(err, response){
-                        //console.log(response);
+                  User.findByIdAndUpdate(dev, {$push: {'project': project._id}}, function(err, response){
+                    if(err) console.log(err);
                   });
-                  //console.log("up");
-                  res.redirect('/profile');
                 }
               });
             }
-            else{
-              console.log("Project already exists. Update project details to add a developer");
-              res.redirect('/profile');
-              //console.log("down");
-            }
+            else console.log("Project already exists. Update project details to add a developer");
           });
         }
       }
-      else{
-        console.log(developer +  " is not registered");
-        res.redirect('/profile');
-      }
+      else console.log(developer +  " is not registered");
     });
+    res.redirect('/profile');
   }
 };
 
@@ -80,15 +65,14 @@ exports.addProjectDeveloper = function(req, res){
   var errors = req.validationErrors();
   if(errors){
     // console.log(errors);
-    res.render('addUser', {err: errors, type: "validationError", message: "Try adding again!"});
+    res.render('addUser', {err: errors, type: "addDeveloperValidationError", message: "Try adding again!"});
   }
   else{
     var user = req.userData;
     var title = req.body.title;
     var developer = req.body.developer;
     User.find({'username': developer}, function(err, user){
-      if(err)
-        console.log(err);
+      if(err) console.log(err);
       if(user[0]){
         dev = user[0]._id;
         if(!title || !dev){
@@ -96,28 +80,20 @@ exports.addProjectDeveloper = function(req, res){
         }
         else{
           Project.count({'title': title}, function(err, count){
-            if(count === 0){
-              console.log("Project " + title + " is not added. First add the project.");
-              res.redirect('/profile');
-            }
+            if(count === 0) console.log("Project " + title + " is not added. First add the project.");
             else{
-              //console.log(dev);
               Project.findOneAndUpdate({'title': title}, {$push: {'developers': dev}}, function(err, project){
-                //console.log(project);
+                if(err) console.log(err);
                 User.findByIdAndUpdate(dev, {$push: {'project': project._id}},function(err, user){
-                  //console.log(user);
+                  if(err) console.log(err);
                 });
               });
-              res.redirect('/profile');
-              //console.log("down");
             }
           });
         }
       }
-      else{
-        console.log(developer +  " is not registered");
-        res.redirect('/profile');
-      }
+      else console.log(developer +  " is not registered");
+      res.redirect('/profile');
     });
   }
 };
@@ -129,25 +105,20 @@ exports.editProjectDescription = function(req, res){
   var errors = req.validationErrors();
   if(errors){
     // console.log(errors);
-    res.render('profile', {err: errors, type: "validationError", message: "Try adding again!"});
+    res.render('profile', {err: errors, type: "editDescriptionValidationError", message: "Try adding again!"});
   }
   else{
     var user = req.userData;
     var title = req.body.title;
     var description = req.body.description;
     Project.count({'title': title}, function(err, count){
-      if(count === 0){
-        console.log("Project " + title + " is not added. First add the project.");
-        res.redirect('/profile');
-      }
+      if(count === 0) console.log("Project " + title + " is not added. First add the project.");
       else{
-        //console.log(dev);
-        Project.findOneAndUpdate({'title': title}, {'description': description}, function(err, project) {
-          //console.log(project);
+        Project.findOneAndUpdate({'title': title}, {'description': description}, function(err, project){
+          if(err) console.log(err);
         });
-        res.redirect('/profile');
-        //console.log("down");
       }
+      res.redirect('/profile');
     });
   }
 };
@@ -158,26 +129,20 @@ exports.editProjectBeginningDate = function(req, res){
 
   var errors = req.validationErrors();
   if(errors){
-    // console.log(errors);
-    res.render('profile', {err: errors, type: "validationError", message: "Try adding again!"});
+    res.render('profile', {err: errors, type: "editBeginningValidationError", message: "Try adding again!"});
   }
   else{
     var user = req.userData;
     var title = req.body.title;
     var beginningDate = req.body.beginningDate;
     Project.count({'title': title}, function(err, count){
-      if(count === 0){
-        console.log("Project " + title + " is not added. First add the project.");
-        res.redirect('/profile');
-      }
+      if(count === 0) console.log("Project " + title + " is not added. First add the project.");
       else{
-        //console.log(dev);
-        Project.findOneAndUpdate({'title': title}, {'beginningDate': beginningDate}, function(err, project) {
-          //console.log(project);
+        Project.findOneAndUpdate({'title': title}, {'beginningDate': beginningDate}, function(err, project){
+          if(err) console.log(err);
         });
-        res.redirect('/profile');
-        //console.log("down");
       }
+      res.redirect('/profile');
     });
   }
 };
@@ -189,42 +154,47 @@ exports.editProjectDueDate = function(req, res){
   var errors = req.validationErrors();
   if(errors){
     // console.log(errors);
-    res.render('profile', {err: errors, type: "validationError", message: "Try adding again!"});
+    res.render('profile', {err: errors, type: "editDueValidationError", message: "Try adding again!"});
   }
   else{
     var user = req.userData;
     var title = req.body.title;
     var dueDate = req.body.dueDate;
     Project.count({'title': title}, function(err, count){
-      if(count === 0){
-        console.log("Project " + title + " is not added. First add the project.");
-        res.redirect('/profile');
-      }
+      if(count === 0) console.log("Project " + title + " is not added. First add the project.");
       else{
-        //console.log(dev);
         Project.findOneAndUpdate({'title': title}, {'dueDate': dueDate}, function(err, project) {
-        //  console.log(project);
+          if(err) console.log(err);
         });
-        res.redirect('/profile');
-        //console.log("down");
       }
+      res.redirect('/profile');
     });
   }
 };
 
-// exports.removeProject = function(req, res){
-//   var user = req.userData;
-//   var title = req.body.title;
-//   Project.find({'title': title}, function(err, project){
-//     if(err) console.log(err);
-//     if(project){
-//       console.log(project[0]._id);
-//       Project.findByIdAndRemove(project[0]._id);
-//       res.redirect('/profile');
-//     }
-//     else{
-//       console.log();
-//       res.redirect('/profile');
-//     }
-//   });
-// };
+exports.removeProject = function(req, res){
+  req.checkBody('title', 'Title is required').notEmpty();
+  var errors = req.validationErrors();
+  if(errors){
+    // console.log(errors);
+    res.render('addUser', {err: errors, type: "addDeveloperValidationError", message: "Try adding again!"});
+  }
+  else{
+    var user = req.userData;
+    var title = req.body.title;
+    Project.find({'title': title}, function(err, project){
+      if(err) console.log(err);
+      if(!project[0]) console.log("Project " + title + " doesn't exists!");
+      else if(project){
+        var id = project[0]._id;
+        User.update({}, {$pull: {'project': id}}, {multi: true}, function(err, response){
+          if(err) console.log(err);
+        });
+        Project.findByIdAndRemove(id, {multi: true}, function(err, response){
+          if(err) console.log(err);
+        });
+      }
+      res.redirect('/profile');
+    });
+  }
+};

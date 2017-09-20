@@ -104,19 +104,19 @@ html
           | #{' '}
           button(type = "Submit") Change
           br
-        //- if(type == "removeProjectValidationError")
-        //-   ul
-        //-   - for (var i = 0; i < err.length; i++) {
-        //-   li #{err[i].msg}
-        //-   - }
-        //- | Want to remove a project?
-        //- br
-        //- form(action = '/removeProject' method = 'POST')
-        //-   | Project Name: 
-        //-   input(name = "title" type = "text" required placeholder= "Project Title")
-        //-   | #{' '}
-        //-   button(type = "Submit") Remove
-        //-   br
+        if(type == "removeProjectValidationError")
+          ul
+          - for (var i = 0; i < err.length; i++) {
+          li #{err[i].msg}
+          - }
+        | Want to remove a project?
+        br
+        form(action = '/removeProject' method = 'POST')
+          | Project Name: 
+          input(name = "title" type = "text" required placeholder= "Project Title")
+          | #{' '}
+          button(type = "Submit") Remove
+          br
       | Projects assigned to you:
       br
       table
