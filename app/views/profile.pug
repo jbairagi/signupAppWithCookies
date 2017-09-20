@@ -18,7 +18,7 @@ html
         br
         |
         br
-        if(type == "addProjectValidationError")
+        if(check == "addProjectValidationError")
           ul
           - for (var i = 0; i < err.length; i++) {
           li #{err[i].msg}
@@ -32,7 +32,7 @@ html
           | #{' '}
           input(name = "description" type = "text" id = "form_description" required placeholder= "Description")
           | #{' '}
-          input(name = "beginningDate" type = "text" id = "form_beginning" required placeholder= "Beginning Date")
+          input(name = "beginningDate" type = "text" required placeholder= "Beginning Date")
           | #{' '}
           input(name = "dueDate" type = "text" id = "form_due" required placeholder= "Due Date")
           | #{' '}
@@ -45,8 +45,8 @@ html
           br
           span(id = "description_error_message")
           br
-          span(id = "beginning_error_message")
-          br
+          //- span(id = "beginning_error_message")
+          //- br
           span(id = "due_error_message")
           br
           span(id = "dev_error_message")
@@ -128,19 +128,19 @@ html
       br
       table
         tr
-          if(result[0])
-            th Project Title
-            th Description
-            th Beginning date
-            th Due date
-        each val in result
-          tr
-            td #{val.title} 
-            td #{val.description} 
-            td #{val.beginningDate.toLocaleDateString()} 
-            td #{val.dueDate.toLocaleDateString()} 
-        else
-          | There are no projects assigned to you yet
+        //-   if(result[0])
+        //-     th Project Title
+        //-     th Description
+        //-     th Beginning date
+        //-     th Due date
+        //- each val in result
+        //-   tr
+        //-     td #{val.title} 
+        //-     td #{val.description} 
+        //-     td #{val.beginningDate.toLocaleDateString()} 
+        //-     td #{val.dueDate.toLocaleDateString()} 
+        //- else
+        //-   | There are no projects assigned to you yet
       br
       | Do you want to logout?
       form(action = "/logout", method = "GET")
