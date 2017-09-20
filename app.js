@@ -12,10 +12,29 @@ seed.start();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser("secret"));
-app.use(validator([]));
+//app.use(validator([]));
+
+app.use(validator({
+  customValidators: {
+    containsTwoTags: function (input) {
+      var tags = input.split(',');
+      // Remove empty tags
+      tags = tags
+        .filter(function(tag) { return /\S/.test(tag) });
+      // Remove duplicate tags
+      tags = tags
+        .filter(function(item, pos, self) {
+          return self.indexOf(item) == pos;
+        });
+      return tags.length <= 2;
+    }
+  }
+}));
+
 
 app.set('view engine', 'pug');
 app.set('views', './app/views');
+app.use(express.static('public'));
 
 var addUser = require('./routes/addUserRoutes.js');
 var session = require('./routes/sessionRoutes.js');
