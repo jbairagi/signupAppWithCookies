@@ -52,6 +52,7 @@ $(function() {
     var regEx = /^\d{4}-\d{2}-\d{2}$/;
     if(!dateString.match(regEx)) return false;  // Invalid format
     var d = new Date(dateString);
+    //var dNow = new Date();
     if(!d.getTime()) return false; // Invalid date (or this could be epoch)
     return d.toISOString().slice(0,10) === dateString;
   }
