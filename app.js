@@ -16,18 +16,26 @@ app.use(cookieParser("secret"));
 
 app.use(validator({
   customValidators: {
-    containsTwoTags: function (input) {
-      var tags = input.split(',');
-      // Remove empty tags
-      tags = tags
-        .filter(function(tag) { return /\S/.test(tag) });
-      // Remove duplicate tags
-      tags = tags
-        .filter(function(item, pos, self) {
-          return self.indexOf(item) == pos;
-        });
-      return tags.length <= 2;
+    isDateValid: function(dateString){
+    var regEx = /^\d{4}-\d{2}-\d{2}$/;
+    if(!dateString.match(regEx)) return false;  // Invalid format
+    var d = new Date(dateString);
+    //var dNow = new Date();
+    if(!d.getTime()) return false; // Invalid date (or this could be epoch)
+    return d.toISOString().slice(0,10) === dateString;
     }
+    // containsTwoTags: function (input) {
+    //   var tags = input.split(',');
+    //   // Remove empty tags
+    //   tags = tags
+    //     .filter(function(tag) { return /\S/.test(tag) });
+    //   // Remove duplicate tags
+    //   tags = tags
+    //     .filter(function(item, pos, self) {
+    //       return self.indexOf(item) == pos;
+    //     });
+    //   return tags.length <= 2;
+    // }
   }
 }));
 
