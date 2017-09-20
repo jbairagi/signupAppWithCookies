@@ -19,7 +19,7 @@ exports.sessionCreate = function(req, res){
              console.log(err);
            }
            if (result === true) {
-             res.cookie('loginId', user[0]._id, {httpOnly: true, signed: true, maxAge: 360000});
+             res.cookie('loginId', user[0]._id, {httpOnly: true, signed: true, maxAge: 3600000});
  						 res.redirect('/profile');
  					 }
  					 else{
