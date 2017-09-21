@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 exports.start = function(){
   var username = "master";
   var pass = "master";
-  var email = "master";
+  var email = "master@master.com";
   var role = "manager";
 
   User.count({ $or:[ {'emailId': email}, {'username': username}, {'role': role}]}, function (err, count) {
@@ -22,8 +22,11 @@ exports.start = function(){
             role: role
           });
           newUser.save(function(err, user){
-            if(err)
-              console.log(err);
+            if(err){
+              var error = [];
+              error.push(err.errors['emailId'].message);
+              console.log(error);
+            }
           });
         })
       }
