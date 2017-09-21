@@ -3,7 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var validator = require('express-validator');
-
+var customValidators = require('./app/helpers/customValidation');
 var thePort = process.env.PORT || 3000;
 
 var seed = require('./app/seed/seedManager.js');
@@ -14,31 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser("secret"));
 //app.use(validator([]));
 
-app.use(validator({
-  customValidators: {
-    isDateValid: function(dateString){
-    var regEx = /^\d{4}-\d{2}-\d{2}$/;
-    if(!dateString.match(regEx)) return false;  // Invalid format
-    var d = new Date(dateString);
-    //var dNow = new Date();
-    if(!d.getTime()) return false; // Invalid date (or this could be epoch)
-    return d.toISOString().slice(0,10) === dateString;
-    }
-    // containsTwoTags: function (input) {
-    //   var tags = input.split(',');
-    //   // Remove empty tags
-    //   tags = tags
-    //     .filter(function(tag) { return /\S/.test(tag) });
-    //   // Remove duplicate tags
-    //   tags = tags
-    //     .filter(function(item, pos, self) {
-    //       return self.indexOf(item) == pos;
-    //     });
-    //   return tags.length <= 2;
-    // }
-  }
-}));
-
+app.use(validator(customValidators));
 
 app.set('view engine', 'pug');
 app.set('views', './app/views');
