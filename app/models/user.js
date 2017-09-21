@@ -1,12 +1,31 @@
 var mongoose = require('mongoose');
 var db = require('./../config/dbConfig');
 var Projects = require('./project.js');
+var validator = require('./../helpers/mongooseValidator');
 
 var userSchema = mongoose.Schema({
-   username: {type: String, required: true},
-	 emailId: {type: String, required: true},
-   password: {type: String, required: true, select: false},
-   role: {type: String, enum: ["manager", "employee"], required: true},
+   username: {
+     type: String,
+     required: true,
+     minlength: 5,
+     maxlength: 20
+   },
+	 emailId: {
+     type: String,
+     validate: validator.emailValidator,
+     required: true
+   },
+   password: {
+     type: String,
+     required: true,
+     select: false,
+     minlength: 5
+   },
+   role: {
+     type: String,
+     enum: ["manager", "employee"],
+     required: true
+   },
    project : [{type : mongoose.Schema.Types.ObjectId, ref : 'Projects'}]
 },{collection : 'Users'});
 
