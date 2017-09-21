@@ -27,11 +27,13 @@ head
 			span(id = "password_error_message")
 			br
 			| Role: #{' '}
-			input(name = "role" type = "text" id = "form_role" required placeholder= "manager or employee")
-			span(id = "role_error_message")
-			//- input(type="radio" name="role" value="manager" checked) Manager
-			//- br
-			//- input(type="radio" name="role" value="employee") Employee
+			//- input(name = "role" type = "text" id = "form_role" required placeholder= "manager or employee")
+			//- span(id = "role_error_message")
+			input(type="radio" name="role" id = "form_role" value="manager" checked) 
+			| Manager
+			| #{' '}
+			input(type="radio" name="role" id = "form_role" value="employee") 
+			| Employee
 			br
 			| Add User:
 			| #{' '}
