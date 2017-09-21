@@ -58,20 +58,60 @@ $(function() {
   }
 
   function check_beginning() {
+    var valid = false;
     if(isValidDate($("#form_beginning").val())) {
-			$("#beginning_error_message").hide();
+      var v = new Date($("#form_beginning").val());
+      var d = new Date();
+      if(d.getFullYear() <= v.getFullYear()){
+        if((d.getMonth()+1) <= (v.getMonth()+1)){
+          if(d.getDate() <= v.getDate()){
+            valid = true;
+          }
+          else valid = false;
+        }
+        else valid = false;
+      }
+      else valid = false;
+      if(valid){
+        $("#beginning_error_message").hide();
+      }
+      else{
+        $("#beginning_error_message").html("Beginning date should be greater than todays date\n");
+  			$("#beginning_error_message").show();
+        error_beginning = true;
+      }
 		} else {
-			$("#beginning_error_message").html("Invalid beginning date (use YYYY-MM-DD format)\n");
+			$("#beginning_error_message").html("Invalid beginning date\n");
 			$("#beginning_error_message").show();
 			error_beginning = true;
 		}
   }
 
   function check_due() {
+    var valid = false;
     if(isValidDate($("#form_due").val())) {
-      $("#due_error_message").hide();
+      var v = new Date($("#form_due").val());
+      var d = new Date($("#form_beginning").val());
+      if(d.getFullYear() <= v.getFullYear()){
+        if((d.getMonth()+1) <= (v.getMonth()+1)){
+          if(d.getDate() <= v.getDate()){
+            valid = true;
+          }
+          else valid = false;
+        }
+        else valid = false;
+      }
+      else valid = false;
+      if(valid){
+        $("#due_error_message").hide();
+      }
+      else{
+        $("#due_error_message").html("Due date should be greater than beginning date\n");
+  			$("#due_error_message").show();
+        error_due = true;
+      }
     } else {
-      $("#due_error_message").html("Invalid due date (use YYYY-MM-DD format)\n");
+      $("#due_error_message").html("Invalid due date\n");
       $("#due_error_message").show();
       error_due = true;
     }

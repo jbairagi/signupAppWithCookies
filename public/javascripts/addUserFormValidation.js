@@ -39,7 +39,7 @@ $(function() {
 	function check_password() {
 		var password_length = $("#form_password").val().length;
 		if(password_length < 5) {
-			$("#password_error_message").html("At least 8 characters");
+			$("#password_error_message").html("At least 5 characters");
 			$("#password_error_message").show();
 			error_password = true;
 		} else {
