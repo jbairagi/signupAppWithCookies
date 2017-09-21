@@ -38,11 +38,16 @@ exports.isManager = function(req, res, next){
       //console.log(user.role);
       if(err)
         console.log(err);
-      if(user.role == "manager"){
-        next();
+      if(user){
+        if(user.role == "manager"){
+          next();
+        }
+        else{
+          res.redirect('/profile');
+        }
       }
-      else{
-        res.redirect('/profile');
+      else {
+        res.redirect('/login');
       }
     });
   }
