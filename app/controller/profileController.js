@@ -4,9 +4,9 @@ var Project = require('./../models/project');
 exports.profile = function(req, res){
   var user = req.userData;
   User.findOne({'username' : user.username}, {'_id': 0}).populate('project').exec(function(err,result){
-  	if (err) res.send(err);
+  	if (err) res.render('show_message', {message: err});
   	else if (result == undefined){
-  		res.send('Invalid Access');
+  		res.render('show_message', {message: "Invalid Access!"});
   	}
     else{
         res.render('profile', {username: user.username, type: user.role, result: result.project});

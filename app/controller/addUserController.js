@@ -25,7 +25,7 @@ exports.addUserCreate =  function(req, res){
     var email = req.body.email;
     var role = req.body.role;
     if(!username || !pass || !email){
-       res.send("Invalid details!");
+       res.render('show_message', {message: "Invalid Details!"});
     }
     else{
       User.count({ $or:[{'emailId': email}, {'username': username}]}, function (err, count) {
@@ -33,6 +33,7 @@ exports.addUserCreate =  function(req, res){
           bcrypt.hash(pass, 10, function (err, hash){
             if (err) {
               console.log(err);
+              res.render('show_message', {message: err});
             }
             var newUser = new User({
               username: username,
@@ -41,8 +42,11 @@ exports.addUserCreate =  function(req, res){
               role: role
             });
             newUser.save(function(err, user){
-              if(err)
-                   res.render('addUser', {message: "Database error", type: "error"});
+              if(err){
+                var error = [];
+                error.push(err.errors['emailId'].message);
+                res.render('addUser', {message: error, type: "error"});
+              }
               else{
                 res.render('addUser', {message: "New " + role+ " added"});
                }
