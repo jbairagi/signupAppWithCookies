@@ -36,6 +36,11 @@ exports.projectCreate = function(req, res){
     var beginningDate = req.body.beginningDate;
     var dueDate = req.body.dueDate;
     var developer = req.body.developer;
+
+    getIdByUsername(developer).then((id) => {
+
+    }).catch(err => {});
+
     User.find({'username': developer}, function(err, user){
       if(err)
         console.log(err);
