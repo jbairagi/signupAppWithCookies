@@ -1,5 +1,6 @@
 var User = require('./../models/user');
 var Project = require('./../models/project');
+var helpers = require('./../helpers/getDetails');
 
 exports.manageProjectNew = function(req, res){
     res.redirect('/profile');
@@ -37,9 +38,9 @@ exports.projectCreate = function(req, res){
     var dueDate = req.body.dueDate;
     var developer = req.body.developer;
 
-    getIdByUsername(developer).then((id) => {
-
-    }).catch(err => {});
+    helpers.getIdByUsername(developer).then((id) => {
+      console.log(id);
+    }).catch(err => {console.log(err);});
 
     User.find({'username': developer}, function(err, user){
       if(err)

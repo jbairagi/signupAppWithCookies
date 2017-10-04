@@ -2,15 +2,14 @@ var User = require('./../models/user');
 var Project = require('./../models/project');
 
 exports.getIdByUsername = function(username){
-  Promise.all((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     User.find({'username': username}, function(err, user){
       if (err) {
         console.log(err);
         return reject(err);
       }
-      if(user[0]){
+      if(user.length){
         var a = user[0]._id;
-        console.log(a);
         return resolve(a);
       }
       else
