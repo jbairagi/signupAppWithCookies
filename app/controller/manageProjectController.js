@@ -1,10 +1,27 @@
 var User = require('./../models/user');
 var Project = require('./../models/project');
 var helpers = require('./../helpers/getDetails');
+const bcrypt = require('bcrypt');
 
 exports.manageProjectNew = function(req, res){
-    res.redirect('/profile');
+  res.redirect('/profile');
 };
+
+exports.getProjects = (req, res) => {
+  var username = req.body.username;
+  var pass = req.body.password;
+  console.log(username);
+  if(!username || !pass){
+    res.status(400).json("Please provide valid login credentials");
+  }
+  else{
+    helpers.validateUser(username, pass).then((result) => {
+      helpers.getProjectsByUsername(username).then((projects) => {
+        res.status(200).json(projects);
+      }).catch(err => {res.status(400).json(err);});
+    }).catch(err => {res.status(400).json(err);});
+  }
+}
 
 exports.projectCreate = function(req, res){
   console.log(req.body.beginningDate);

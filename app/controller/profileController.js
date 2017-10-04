@@ -9,7 +9,7 @@ exports.profile = function(req, res){
   		res.render('show_message', {message: "Invalid Access!"});
   	}
     else{
-        res.render('profile', {username: user.username, type: user.role, result: result.project});
+        res.render('profile', {username: result.username, type: user.role, result: result.project});
     }
   });
 };
