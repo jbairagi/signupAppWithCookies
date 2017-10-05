@@ -8,6 +8,7 @@ var validator = require('express-validator');
 var session      = require('express-session');
 var customValidators = require('./app/helpers/customValidation');
 var thePort = process.env.PORT || 3000;
+require('./app/config/passport')(passport);
 
 var seed = require('./app/seed/seedManager.js');
 seed.start();

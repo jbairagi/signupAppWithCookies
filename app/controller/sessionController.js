@@ -35,7 +35,9 @@ exports.sessionCreate = function(req, res){
 };
 
 exports.sessionDestroy = function(req, res){
-  res.clearCookie('loginId');
-  delete req.user;
+  // res.clearCookie('loginId');
+  // delete req.user;
+  req.logout();
+        // res.redirect('/');
    res.redirect('/login');
 };
