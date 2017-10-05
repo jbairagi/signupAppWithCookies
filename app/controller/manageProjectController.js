@@ -10,7 +10,6 @@ exports.manageProjectNew = function(req, res){
 exports.getProjects = (req, res) => {
   var username = req.body.username;
   var pass = req.body.password;
-  console.log(username);
   if(!username || !pass){
     res.status(400).json("Please provide valid login credentials");
   }

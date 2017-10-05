@@ -19,16 +19,16 @@ exports.getIdByUsername = function(username){
   })
 }
 
-exports.getIdByProject = function(title){
-  Project.find({'title': title}, function(err, project){
-    if(err)
-      console.log(err);
-    if(project[0])
-      return project[0]._id;
-    else
-      console.log(title +  " is not registered");
-  });
-}
+// exports.getIdByProject = function(title){
+//   Project.find({'title': title}, function(err, project){
+//     if(err)
+//       console.log(err);
+//     if(project[0])
+//       return project[0]._id;
+//     else
+//       console.log(title +  " is not registered");
+//   });
+// }
 
 exports.getProjectsByUsername = function(username){
   return new Promise((resolve, reject) => {
