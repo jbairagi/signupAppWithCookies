@@ -1,17 +1,16 @@
-var express = require('express');
-var router = express.Router();
 var manageProjects = require('./../app/controller/manageProjectController');
 var check = require('./../app/middlewares/checks.js');
 
-router.get('/addProjects', manageProjects.manageProjectNew);
-router.post('/addProjects', check.isManager, manageProjects.projectCreate);
 
-router.post('/projects', manageProjects.getProjects);
+module.exports = function(app, passport) {
+  app.get('/addProjects', manageProjects.manageProjectNew);
+  app.post('/addProjects', check.isManager, manageProjects.projectCreate);
 
-router.post('/addProjectDeveloper', check.isManager, manageProjects.addProjectDeveloper);
-router.post('/editProjectDescription', check.isManager, manageProjects.editProjectDescription);
-router.post('/editProjectBeginningDate', check.isManager, manageProjects.editProjectBeginningDate);
-router.post('/editProjectDueDate', check.isManager, manageProjects.editProjectDueDate);
-router.post('/removeProject', check.isManager, manageProjects.removeProject);
+  app.post('/projects', manageProjects.getProjects);
 
-module.exports = router;
+  app.post('/addProjectDeveloper', check.isManager, manageProjects.addProjectDeveloper);
+  app.post('/editProjectDescription', check.isManager, manageProjects.editProjectDescription);
+  app.post('/editProjectBeginningDate', check.isManager, manageProjects.editProjectBeginningDate);
+  app.post('/editProjectDueDate', check.isManager, manageProjects.editProjectDueDate);
+  app.post('/removeProject', check.isManager, manageProjects.removeProject);
+}

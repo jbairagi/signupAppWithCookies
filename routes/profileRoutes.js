@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
 var profile = require('./../app/controller/profileController');
 var check = require('./../app/middlewares/checks.js');
 
-router.get('/profile', check.isLoggedIn, profile.profile);
+module.exports = function(app, passport) {
+  app.get('/profile', check.isLoggedIn, profile.profile);
+}

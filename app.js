@@ -35,16 +35,10 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());
 
-// require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
-
-var addUser = require('./routes/addUserRoutes.js');
-// var session = require('./routes/sessionRoutes.js')(passport);
-var profile = require('./routes/profileRoutes.js');
-var projects = require('./routes/manageProjectsRoutes.js');
-
-app.use(addUser);
+require('./routes/addUserRoutes.js')(app, passport);
 require('./routes/sessionRoutes.js')(app, passport);
-app.use(profile);
-app.use(projects);
+require('./routes/profileRoutes.js')(app, passport);
+require('./routes/manageProjectsRoutes.js')(app, passport);
+
 
 app.listen(thePort);
