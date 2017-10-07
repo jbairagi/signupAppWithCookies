@@ -1,13 +1,12 @@
 var User = require('./../models/user');
 
 exports.userLoggedIn = function(req, res, next){
-  let userId = req.signedCookies['loginId'];
-  if(userId){
+  if(req.user){
+    let userId = req.user._id;
     User.findById(userId, (err, user) => {
       if (err)
         console.log(err);
-      req.userData = user;
-      //console.log(user);
+      req.user = user;
       res.redirect('/profile');
     });
   }
@@ -17,12 +16,12 @@ exports.userLoggedIn = function(req, res, next){
 }
 
 exports.assignUser = function(req, res, next){
-  let userId = req.signedCookies['loginId'];
-  if(userId){
+  if(req.user){
+    let userId = req.user._id;
     User.findById(userId, (err, user) => {
         if (err)
           console.log(err);
-        req.userData = user;
+        req.user = user;
         next();
       });
   }
@@ -32,10 +31,9 @@ exports.assignUser = function(req, res, next){
 }
 
 exports.isManager = function(req, res, next){
-  let userId = req.signedCookies['loginId'];
-  if(userId){
+  if(req.user){
+    let userId = req.user._id;
     User.findById(userId, (err, user) =>{
-      //console.log(user.role);
       if(err)
         console.log(err);
       if(user){

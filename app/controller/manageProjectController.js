@@ -102,7 +102,6 @@ exports.addProjectDeveloper = function(req, res){
     res.render('addUser', {err: errors, type: "addDeveloperValidationError", message: "Try adding again!"});
   }
   else{
-    var user = req.userData;
     var title = req.body.title;
     var developer = req.body.developer;
     User.find({'username': developer}, function(err, user){
@@ -142,7 +141,6 @@ exports.editProjectDescription = function(req, res){
     res.render('profile', {err: errors, type: "editDescriptionValidationError", message: "Try adding again!"});
   }
   else{
-    var user = req.userData;
     var title = req.body.title;
     var description = req.body.description;
     Project.count({'title': title}, function(err, count){
@@ -166,7 +164,6 @@ exports.editProjectBeginningDate = function(req, res){
     res.render('profile', {err: errors, type: "editBeginningValidationError", message: "Try adding again!"});
   }
   else{
-    var user = req.userData;
     var title = req.body.title;
     var beginningDate = req.body.beginningDate;
     Project.count({'title': title}, function(err, count){
@@ -191,7 +188,6 @@ exports.editProjectDueDate = function(req, res){
     res.render('profile', {err: errors, type: "editDueValidationError", message: "Try adding again!"});
   }
   else{
-    var user = req.userData;
     var title = req.body.title;
     var dueDate = req.body.dueDate;
     Project.count({'title': title}, function(err, count){
@@ -214,7 +210,6 @@ exports.removeProject = function(req, res){
     res.render('addUser', {err: errors, type: "addDeveloperValidationError", message: "Try adding again!"});
   }
   else{
-    var user = req.userData;
     var title = req.body.title;
     Project.find({'title': title}, function(err, project){
       if(err) console.log(err);
