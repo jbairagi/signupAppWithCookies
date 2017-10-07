@@ -15,19 +15,11 @@ exports.userLoggedIn = function(req, res, next){
   }
 }
 
-exports.assignUser = function(req, res, next){
-  if(req.user){
-    let userId = req.user._id;
-    User.findById(userId, (err, user) => {
-        if (err)
-          console.log(err);
-        req.user = user;
-        next();
-      });
-  }
-  else{
-    res.redirect('/login');
-  }
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()){
+      return next();
+    }
+    res.redirect('/');
 }
 
 exports.isManager = function(req, res, next){
