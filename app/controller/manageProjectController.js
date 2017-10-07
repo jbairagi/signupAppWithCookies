@@ -35,7 +35,7 @@ exports.projectCreate = function(req, res){
   req.checkBody('developer', 'Developer is required').notEmpty();
   var errors = req.validationErrors();
   if(errors){
-    let userId = req.signedCookies['loginId'];
+    let userId = req.user._id;
     if(userId){
       User.findById(userId, (err, user) => {
           if (err)
