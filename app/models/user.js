@@ -26,6 +26,9 @@ var userSchema = mongoose.Schema({
      enum: ["manager", "employee"],
      required: true
    },
+   token: {
+     type: String
+   },
    project : [{type : mongoose.Schema.Types.ObjectId, ref : 'Projects'}]
 },{collection : 'Users'});
 

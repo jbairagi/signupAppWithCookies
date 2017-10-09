@@ -30,9 +30,9 @@ exports.getIdByUsername = function(username){
 //   });
 // }
 
-exports.getProjectsByUsername = function(username){
+exports.getProjectsByToken = function(token){
   return new Promise((resolve, reject) => {
-    User.findOne({'username' : username}, {'_id': 0}).populate('project').exec(function(err,result){
+    User.findOne({'token' : token}, {'_id': 0}).populate('project').exec(function(err,result){
       if (err) return reject(err);
       else if (result == undefined){
         return reject("Invalid Access!");
@@ -58,7 +58,7 @@ exports.validateUser = function(username, pass){
           else{
             return reject("Please provide valid login credentials");
           }
-        });       
+        });
       }
       else{
         return reject("User not found! Please provide valid login credentials");

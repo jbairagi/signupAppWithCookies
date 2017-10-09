@@ -1,15 +1,17 @@
-var User = require('./../models/user');
+const User = require('./../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 exports.sessionNew = function(req, res){
   res.render('login', {message: 'Log in'});
 };
 
 exports.sessionCreate = function(req, res){
-   var username = req.body.username;
-   var pass = req.body.password;
+   const username = req.body.username;
+   const pass = req.body.password;
    if(!username || !pass){
-     res.render('login', {message: "Please enter all the fields"});
+     res.status(401).json({message:"Please enter all the fields"})
+    //  res.render('login', {message: "Please enter all the fields"});
    }
    else{
      User.find({'username': username},'+password', function(err, user){
@@ -19,16 +21,29 @@ exports.sessionCreate = function(req, res){
              console.log(err);
            }
            if (result === true) {
-             res.cookie('loginId', user[0]._id, {httpOnly: true, signed: true, maxAge: 3600000});
- 						 res.redirect('/profile');
+             var secret = 'sseeccrreett'
+             var token = jwt.sign({
+               _id: user[0]._id.toHexString(),
+               secret
+             }, 'test123').toString();
+
+             res.status(200).json(token);
+             //
+             User.findOneAndUpdate({'username': username}, {$set: {'token': token}}, function(err, response){
+               if(err) console.log(err);
+             });
+
+
+             //save token
  					 }
  					 else{
- 						 res.render('login', {message: "Invalid credentials!"});
+             res.status(401).json({message:"Invalid credentials!"})
+ 					// 	 res.render('login', {message: "Invalid credentials!"});
  					 }
          });
         }
        else{
-         res.render('login', {message: "User not found! Login again"});
+         res.status(401).json({message:"no such user found"});
        }
      });
    }

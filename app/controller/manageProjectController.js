@@ -8,16 +8,13 @@ exports.manageProjectNew = function(req, res){
 };
 
 exports.getProjects = (req, res) => {
-  var username = req.body.username;
-  var pass = req.body.password;
-  if(!username || !pass){
-    res.status(400).json("Please provide valid login credentials");
+  var token = req.body.token;
+  if(!token){
+    res.status(400).json("Token value isn't valid");
   }
   else{
-    helpers.validateUser(username, pass).then((result) => {
-      helpers.getProjectsByUsername(username).then((projects) => {
-        res.status(200).json(projects);
-      }).catch(err => {res.status(400).json(err);});
+    helpers.getProjectsByToken(token).then((projects) => {
+      res.status(200).json(projects);
     }).catch(err => {res.status(400).json(err);});
   }
 }
