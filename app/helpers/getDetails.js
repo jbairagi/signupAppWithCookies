@@ -34,7 +34,7 @@ exports.getProjectsByToken = function(token){
   return new Promise((resolve, reject) => {
     User.findOne({'token' : token}, {'_id': 0}).populate('project').exec(function(err,result){
       if (err) return reject(err);
-      else if (result == undefined){
+      if (result == undefined){
         return reject("Invalid Access!");
       }
       else{
