@@ -27,14 +27,14 @@ exports.sessionCreate = function(req, res){
                secret
              }, 'test123').toString();
 
-             res.status(200).json(token);
-             //
+             const data = {
+               token: token,
+               role: user[0].role
+             }
+             res.status(200).json(data);
              User.findOneAndUpdate({'username': username}, {$set: {'token': token}}, function(err, response){
                if(err) console.log(err);
              });
-
-
-             //save token
  					 }
  					 else{
              res.status(401).json({message:"Invalid credentials!"})
