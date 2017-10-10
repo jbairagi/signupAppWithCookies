@@ -4,7 +4,7 @@ var manageProjects = require('./../app/controller/manageProjectController');
 var check = require('./../app/middlewares/checks.js');
 
 router.get('/addProjects', manageProjects.manageProjectNew);
-router.post('/addProjects', check.isManager, manageProjects.projectCreate);
+router.post('/addProjects', manageProjects.projectCreate);
 
 router.post('/projects', manageProjects.getProjects);
 

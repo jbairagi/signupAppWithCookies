@@ -8,19 +8,21 @@ exports.manageProjectNew = function(req, res){
 };
 
 exports.getProjects = (req, res) => {
-  var token = req.body.token;
+  var token = req.header('auth-token');
   if(!token){
     res.status(400).json("Token value isn't valid");
   }
   else{
-    helpers.getProjectsByToken(token).then((projects) => {
-      res.status(200).json(projects);
+    helpers.validateByToken(token).then((user) => {
+      helpers.getProjectsByUsername(user.username).then((projects) => {
+        res.status(200).json(projects);
+      }).catch(err => {res.status(400).json(err);});
     }).catch(err => {res.status(400).json(err);});
   }
 }
 
 exports.projectCreate = function(req, res){
-  console.log(req.body.beginningDate);
+  console.log("here here");
   req.checkBody('title', 'Title is required').notEmpty();
   req.checkBody('description', 'Description is required').notEmpty();
   req.checkBody('beginningDate', 'Beginning Date is required').notEmpty();
@@ -50,16 +52,14 @@ exports.projectCreate = function(req, res){
     var beginningDate = req.body.beginningDate;
     var dueDate = req.body.dueDate;
     var developer = req.body.developer;
+    var token = req.header('auth-token');
+    // helpers.getIdByUsername(developer).then((id) => {
+    //   console.log(id);
+    // }).catch(err => {console.log(err);});
 
-    helpers.getIdByUsername(developer).then((id) => {
-      console.log(id);
-    }).catch(err => {console.log(err);});
-
-    User.find({'username': developer}, function(err, user){
-      if(err)
-        console.log(err);
-      if(user[0]){
-        dev = user[0]._id;
+    helpers.validateByToken(token).then((user) => {
+      helpers.getIdByUsername(developer)
+      .then((dev) => {
         if(!title || !description || !beginningDate || !dueDate || !dev) console.log("Invalid details!");
         else{
           Project.count({'title': title}, function(err, count){
@@ -75,6 +75,7 @@ exports.projectCreate = function(req, res){
                 if(err) res.redirect('/login');
                 else{
                   User.findByIdAndUpdate(dev, {$push: {'project': project._id}}, function(err, response){
+                    res.status(200).json(project);
                     if(err) console.log(err);
                   });
                 }
@@ -83,10 +84,8 @@ exports.projectCreate = function(req, res){
             else console.log("Project already exists. Update project details to add a developer");
           });
         }
-      }
-      else console.log(developer +  " is not registered");
-    });
-    res.redirect('/profile');
+      }).catch(err => {console.log(err);});
+    }).catch(err => {res.status(400).json(err);});
   }
 };
 

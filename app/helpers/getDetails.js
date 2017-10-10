@@ -30,9 +30,23 @@ exports.getIdByUsername = function(username){
 //   });
 // }
 
-exports.getProjectsByToken = function(token){
+exports.validateByToken = function(token){
   return new Promise((resolve, reject) => {
-    User.findOne({'token' : token}, {'_id': 0}).populate('project').exec(function(err,result){
+    User.findOne({'token': token}, function(err, user){
+      if (err) return reject(err);
+      if (user == undefined){
+        return reject("Invalid Access!");
+      }
+      else{
+        return resolve(user);
+      }
+    });
+  })
+}
+
+exports.getProjectsByUsername = function(username){
+  return new Promise((resolve, reject) => {
+    User.findOne({'username' : username}, {'_id': 0}).populate('project').exec(function(err,result){
       if (err) return reject(err);
       if (result == undefined){
         return reject("Invalid Access!");
