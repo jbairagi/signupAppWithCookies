@@ -141,17 +141,18 @@ exports.editProjectDescription = function(req, res){
     res.render('profile', {err: errors, type: "editDescriptionValidationError", message: "Try adding again!"});
   }
   else{
-    var user = req.userData;
     var title = req.body.title;
     var description = req.body.description;
+    console.log(description);
     Project.count({'title': title}, function(err, count){
       if(count === 0) console.log("Project " + title + " is not added. First add the project.");
       else{
         Project.findOneAndUpdate({'title': title}, {'description': description}, function(err, project){
+          console.log("des Updated");
           if(err) console.log(err);
         });
       }
-      res.redirect('/profile');
+      res.status(200).json("Project Description Updated");
     });
   }
 };
@@ -175,7 +176,7 @@ exports.editProjectBeginningDate = function(req, res){
           if(err) console.log(err);
         });
       }
-      res.redirect('/profile');
+      res.status(200).json("Project Beginning Date Updated");
     });
   }
 };
@@ -200,7 +201,7 @@ exports.editProjectDueDate = function(req, res){
           if(err) console.log(err);
         });
       }
-      res.redirect('/profile');
+      res.status(200).json("Project Due Date Updated");
     });
   }
 };
