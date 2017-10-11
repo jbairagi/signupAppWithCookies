@@ -9,20 +9,23 @@ exports.manageProjectNew = function(req, res){
 
 exports.getProjects = (req, res) => {
   var token = req.header('auth-token');
-  if(!token){
-    res.status(400).json("Token value isn't valid");
-  }
-  else{
-    helpers.validateByToken(token).then((user) => {
-      helpers.getProjectsByUsername(user.username).then((projects) => {
-        res.status(200).json(projects);
-      }).catch(err => {res.status(400).json(err);});
+  helpers.getUserByToken(token).then((user) => {
+    helpers.getProjectsByUsername(user.username).then((userProjects) => {
+      if(user.role === 'manager'){
+        Project.find({}, function(err, allProjects){
+          const output = {allProjects, userProjects}
+          res.status(200).json(output);
+        });
+      }
+      else{
+        const output = {userProjects}
+        res.status(200).json(output);
+      }
     }).catch(err => {res.status(400).json(err);});
-  }
+  }).catch(err => {res.status(400).json(err);});
 }
 
 exports.projectCreate = function(req, res){
-  console.log("here here");
   req.checkBody('title', 'Title is required').notEmpty();
   req.checkBody('description', 'Description is required').notEmpty();
   req.checkBody('beginningDate', 'Beginning Date is required').notEmpty();
@@ -57,7 +60,7 @@ exports.projectCreate = function(req, res){
     //   console.log(id);
     // }).catch(err => {console.log(err);});
 
-    helpers.validateByToken(token).then((user) => {
+    helpers.getUserByToken(token).then((user) => {
       helpers.getIdByUsername(developer)
       .then((dev) => {
         if(!title || !description || !beginningDate || !dueDate || !dev) console.log("Invalid details!");
@@ -210,7 +213,6 @@ exports.removeProject = function(req, res){
     res.render('addUser', {err: errors, type: "addDeveloperValidationError", message: "Try adding again!"});
   }
   else{
-    var user = req.userData;
     var title = req.body.title;
     Project.find({'title': title}, function(err, project){
       if(err) console.log(err);
@@ -224,7 +226,7 @@ exports.removeProject = function(req, res){
           if(err) console.log(err);
         });
       }
-      res.redirect('/profile');
+      res.status(200).json("Project Deleted");
     });
   }
 };

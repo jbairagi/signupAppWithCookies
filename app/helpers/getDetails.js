@@ -30,7 +30,7 @@ exports.getIdByUsername = function(username){
 //   });
 // }
 
-exports.validateByToken = function(token){
+exports.getUserByToken = function(token){
   return new Promise((resolve, reject) => {
     User.findOne({'token': token}, function(err, user){
       if (err) return reject(err);

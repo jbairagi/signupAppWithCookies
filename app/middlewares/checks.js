@@ -1,4 +1,5 @@
 var User = require('./../models/user');
+var helpers = require('./../helpers/getDetails');
 
 exports.userLoggedIn = function(req, res, next){
   let userId = req.signedCookies['loginId'];
@@ -32,26 +33,11 @@ exports.assignUser = function(req, res, next){
 }
 
 exports.isManager = function(req, res, next){
-  let userId = req.signedCookies['loginId'];
-  if(userId){
-    User.findById(userId, (err, user) =>{
-      //console.log(user.role);
-      if(err)
-        console.log(err);
-      if(user){
-        if(user.role == "manager"){
-          next();
-        }
-        else{
-          res.redirect('/profile');
-        }
-      }
-      else {
-        res.redirect('/login');
-      }
-    });
-  }
-  else{
-    res.render('login', {message: "Login first!"});
-  }
+  var token = req.header('auth-token');
+  helpers.getUserByToken(token).then((user) => {
+    if(user.role === 'manager')
+      next()
+    else
+      res.status(400).json(err)
+  }).catch(err => {res.status(400).json(err);});
 }
