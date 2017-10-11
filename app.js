@@ -3,7 +3,6 @@ var app = express();
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var passport = require('passport');
-var flash    = require('connect-flash');
 var validator = require('express-validator');
 var session      = require('express-session');
 var customValidators = require('./app/helpers/customValidation');
@@ -33,7 +32,6 @@ app.use(session({
 })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-app.use(flash());
 
 require('./routes/addUserRoutes.js')(app, passport);
 require('./routes/sessionRoutes.js')(app, passport);
