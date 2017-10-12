@@ -14,22 +14,25 @@ exports.sessionCreate = function(req, res){
     //  res.render('login', {message: "Please enter all the fields"});
    }
    else{
-     User.find({'username': username},'+password', function(err, user){
-       if(user[0]){
-         bcrypt.compare(pass, user[0].password, function (err, result) {
+     User.findOne({'username': username},'+password', function(err, user){
+       if(user){
+         bcrypt.compare(pass, user.password, function (err, result) {
            if(err){
+             res.status(401).json({message:"Invalid credentials!"})
              console.log(err);
            }
            if (result === true) {
              var secret = 'sseeccrreett'
              var token = jwt.sign({
-               _id: user[0]._id.toHexString(),
+               _id: user._id.toHexString(),
+               role: user.role,
+               name: user.username,
                secret
              }, 'test123').toString();
 
              const data = {
                token: token,
-               role: user[0].role
+               role: user.role
              }
              res.status(200).json(data);
              User.findOneAndUpdate({'username': username}, {$set: {'token': token}}, function(err, response){
