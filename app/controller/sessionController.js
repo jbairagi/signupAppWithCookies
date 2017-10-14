@@ -34,13 +34,13 @@ exports.sessionCreate = function(req, res){
                token: token,
                role: user.role
              }
-             res.status(200).json(data);
+             res.status(200).json({status: 200, data});
              User.findOneAndUpdate({'username': username}, {$set: {'token': token}}, function(err, response){
                if(err) console.log(err);
              });
  					 }
  					 else{
-             res.status(401).json({message:"Invalid credentials!"})
+             res.status(401).json({status: 401, message:"Invalid credentials!"})
  					// 	 res.render('login', {message: "Invalid credentials!"});
  					 }
          });
