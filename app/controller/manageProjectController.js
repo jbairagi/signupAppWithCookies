@@ -13,16 +13,16 @@ exports.getProjects = (req, res) => {
     helpers.getProjectsByUsername(user.username).then((userProjects) => {
       if(user.role === 'manager'){
         Project.find({}, function(err, allProjects){
-          const output = {allProjects, userProjects}
-          res.status(200).json(output);
+          const data = {allProjects, userProjects}
+          res.status(200).json({status: 200, data});
         });
       }
       else{
-        const output = {userProjects}
-        res.status(200).json(output);
+        const data = {userProjects}
+        res.status(200).json({status: 200, data});
       }
-    }).catch(err => {res.status(400).json(err);});
-  }).catch(err => {res.status(400).json(err);});
+    }).catch(err => {res.status(400).json({status: 400, err});});
+  }).catch(err => {res.status(400).json({status: 400, err});});
 }
 
 exports.projectCreate = function(req, res){
@@ -56,10 +56,6 @@ exports.projectCreate = function(req, res){
     var dueDate = req.body.dueDate;
     var developer = req.body.developer;
     var token = req.header('auth-token');
-    // helpers.getIdByUsername(developer).then((id) => {
-    //   console.log(id);
-    // }).catch(err => {console.log(err);});
-
     helpers.getUserByToken(token).then((user) => {
       helpers.getIdByUsername(developer)
       .then((dev) => {
@@ -78,7 +74,7 @@ exports.projectCreate = function(req, res){
                 if(err) res.redirect('/login');
                 else{
                   User.findByIdAndUpdate(dev, {$push: {'project': project._id}}, function(err, response){
-                    res.status(200).json(project);
+                    res.status(200).json({status: 200, project, developer});
                     if(err) console.log(err);
                   });
                 }
@@ -143,12 +139,10 @@ exports.editProjectDescription = function(req, res){
   else{
     var title = req.body.title;
     var description = req.body.description;
-    console.log(description);
     Project.count({'title': title}, function(err, count){
       if(count === 0) console.log("Project " + title + " is not added. First add the project.");
       else{
         Project.findOneAndUpdate({'title': title}, {'description': description}, function(err, project){
-          console.log("des Updated");
           if(err) console.log(err);
         });
       }
@@ -227,7 +221,7 @@ exports.removeProject = function(req, res){
           if(err) console.log(err);
         });
       }
-      res.status(200).json("Project Deleted");
+      res.status(200).json({status: 200, response: "Project Deleted"});
     });
   }
 };

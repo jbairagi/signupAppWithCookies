@@ -17,7 +17,8 @@ exports.addUserCreate =  function(req, res){
 
   if(errors){
     // console.log(errors);
-    res.render('addUser', {err: errors, type: "validationError", message: "Try adding again!"});
+    res.status(400).json({status: 400, message: "Validation Error! Try adding again!"});
+    // res.render('addUser', {err: errors, type: "validationError", message: "Try adding again!"});
   }
   else{
     var username = req.body.username;
@@ -25,7 +26,8 @@ exports.addUserCreate =  function(req, res){
     var email = req.body.email;
     var role = req.body.role;
     if(!username || !pass || !email){
-       res.render('show_message', {message: "Invalid Details!"});
+      res.status(400).json({status: 400, message: "Invalid Details!"});
+      // res.render('show_message', {message: "Invalid Details!"});
     }
     else{
       User.count({ $or:[{'emailId': email}, {'username': username}]}, function (err, count) {
@@ -33,7 +35,7 @@ exports.addUserCreate =  function(req, res){
           bcrypt.hash(pass, 10, function (err, hash){
             if (err) {
               console.log(err);
-              res.render('show_message', {message: err});
+              res.status(400).json({status: 400, message: err});
             }
             var newUser = new User({
               username: username,
@@ -45,16 +47,19 @@ exports.addUserCreate =  function(req, res){
               if(err){
                 var error = [];
                 error.push(err.errors['emailId'].message);
-                res.render('addUser', {message: error, type: "error"});
+                res.status(400).json({status: 400, message: error});
+                // res.render('addUser', {message: error, type: "error"});
               }
               else{
-                res.render('addUser', {message: "New " + role+ " added"});
+                res.status(200).json({status: 200, message: "New " + role+ " added"});
+                // res.render('addUser', {message: "New " + role+ " added"});
                }
             });
           })
         }
         else{
-          res.render('addUser', {message: "Username or email already registered! addUser Again!"});
+          res.status(200).json({status: 200, message: "Username or email already registered! addUser Again!"});
+          // res.render('addUser', {message: "Username or email already registered! addUser Again!"});
         }
       });
     }

@@ -32,7 +32,8 @@ exports.sessionCreate = function(req, res){
 
              const data = {
                token: token,
-               role: user.role
+               role: user.role,
+               username: user.username
              }
              res.status(200).json({status: 200, data});
              User.findOneAndUpdate({'username': username}, {$set: {'token': token}}, function(err, response){
